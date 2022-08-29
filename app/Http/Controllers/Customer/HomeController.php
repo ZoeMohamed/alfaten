@@ -54,6 +54,8 @@ class HomeController extends Controller
 
         $categories = Category::with('products.discounts')->get();
 
+        // dd($categories);
+
         foreach ($categories as $category) {
             foreach ($category->products as $product) {
                 $product->discount =  Discount::where('product_id', $product->id)

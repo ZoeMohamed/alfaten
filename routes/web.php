@@ -32,6 +32,9 @@ Route::controller(\App\Http\Controllers\Customer\HomeController::class)->prefix(
 
 Route::controller(\App\Http\Controllers\Customer\CartsController::class)->prefix('customer')->group(function () {
     Route::get('/carts', 'index')->name('customer.carts');
+    Route::get('/carts/{id}', 'show')->name('customer.detailCart');
+    Route::post('/carts/update/{id}', 'update')->name('customer.updateCart');
+    Route::post('/carts/delete/{id}', 'delete')->name('customer.deleteCart');
 });
 Route::get('cashier/home', function () {
 })->name('cashier.home');

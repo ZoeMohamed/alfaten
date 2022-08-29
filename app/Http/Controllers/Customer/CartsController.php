@@ -27,33 +27,25 @@ class CartsController extends Controller
     public function index()
     {
 
-        $categories = Category::with('products.discounts')->get();
 
-        // dd($categories);
-
-        foreach ($categories as $category) {
-            foreach ($category->products as $product) {
-                $product->discount =  Discount::where('product_id', $product->id)
-                    ->where('start_date', "<=", date('Y-m-d'))
-                    ->where('end_date', '>=', date('Y-m-d'))->first();
-
-                if ($product->discount == null) {
-                    $product->discount = (object)[
-                        "percentage" => 0
-                    ];
-                }
-
-                $product->potongan = $product->discount->percentage / 100 * $product->price;
-                $product->new_price = $product->price - $product->potongan;
-
-                // dd($product->potongan);
-            }
-        }
         $carts = Transaction::where('user_id', Auth::user()->id)->where('status', 'unpaid')
             ->with('product')->get();
-        // ->select('*', DB::raw('sum(quantity) as qty'))
-        // ->groupBy('product_id')
-        // ->get();
+
+        foreach ($carts as $cart) {
+
+            $cart->product->discount =  Discount::where('product_id', $cart->product->id)
+                ->where('start_date', "<=", date('Y-m-d'))
+                ->where('end_date', '>=', date('Y-m-d'))->first();
+
+            if ($cart->product->discount == null) {
+                $cart->product->discount = (object)[
+                    "percentage" => 0
+                ];
+            }
+
+            $cart->product->potongan = $cart->product->discount->percentage / 100 * $cart->product->price;
+            $cart->product->new_price = $cart->product->price - $cart->product->potongan;
+        }
 
         // dd($carts);
         $jumlah_cart = $carts->sum('quantity');
@@ -63,7 +55,7 @@ class CartsController extends Controller
             // dd($cart->product->price
             $total_harga += $cart->quantity * $cart->product->price;
         }
-        return view('customer.carts', compact('carts', 'total_harga', 'jumlah_cart', 'product'));
+        return view('customer.carts', compact('carts', 'total_harga', 'jumlah_cart'));
     }
 
     /**
@@ -118,7 +110,16 @@ class CartsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $check = Transaction::where('product_id', $request->product_id)
+            ->where('user_id', Auth::user()->id)
+            ->where('status', 'unpaid')
+            ->first();
+        Transaction::find($id)->update([
+            "quantity" => $request->qty
+        ]);
+        // dd($request->qty);
+        return redirect()->back();
     }
 
     /**

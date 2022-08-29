@@ -32,23 +32,30 @@
 
                                 <div class="card-body">
 
-
                                     <p>Carts Quantity : {{ $cart->quantity }}</p>
                                     <p>Price : {{ $cart->product->price }}</p>
-                                    {{-- <br>
-                                    {!! $product->new_price !== $product->price ? "<s> $product->price </s>" : $product->price !!}
+                                    {{-- {!! $product->new_price !== $product->price ? "<s> $product->price </s>" : $product->price !!}
                                     <br>
                                     {{ $product->new_price !== $product->price ? $product->new_price : '' }} --}}
-                                    <p>Price After Discount : {{ $cart->product->price }}</p>
-
+                                    <p>Price After Discount : {{ $cart->product->new_price }}</p>
                                     <div class="d-flex gap-3">
-                                        <button class="btn btn-success">Detail</button>
-                                        <button class="btn btn-warning">Edit</button>
-                                        <button class="btn btn-danger">Delete</button>
+                                    @include('customer.modal_detail')
+                                        <button class="btn btn-success" data-bs-target="#detail{{$cart->product->id}}" data-bs-toggle="modal">Detail</button>
+
+                                    @include('customer.modal_edit')
+
+                                        <button class="btn btn-warning" data-bs-target="#edit{{$cart->product->id}}" data-bs-toggle="modal">Edit</button>
+
+
+                                    @include('customer.modal_delete')
+
+                                        <button class="btn btn-danger" data-bs-target="#delete{{$cart->product->id}}" data-bs-toggle="modal">Delete</button>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
+
                     @endforeach
 
 
