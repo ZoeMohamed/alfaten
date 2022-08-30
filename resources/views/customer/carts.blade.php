@@ -39,23 +39,25 @@
                                     {{ $product->new_price !== $product->price ? $product->new_price : '' }} --}}
                                     <p>Price After Discount : {{ $cart->product->new_price }}</p>
                                     <div class="d-flex gap-3">
-                                    @include('customer.modal_detail')
-                                        <button class="btn btn-success" data-bs-target="#detail{{$cart->product->id}}" data-bs-toggle="modal">Detail</button>
+                                        @include('customer.modal_detail')
+                                        <button class="btn btn-success" data-bs-target="#detail{{ $cart->id }}"
+                                            data-bs-toggle="modal">Detail</button>
 
-                                    @include('customer.modal_edit')
+                                        @include('customer.modal_edit')
 
-                                        <button class="btn btn-warning" data-bs-target="#edit{{$cart->product->id}}" data-bs-toggle="modal">Edit</button>
+                                        <button class="btn btn-warning" data-bs-target="#edit{{ $cart->id }}"
+                                            data-bs-toggle="modal">Edit</button>
 
 
-                                    @include('customer.modal_delete')
+                                        @include('customer.modal_delete')
 
-                                        <button class="btn btn-danger" data-bs-target="#delete{{$cart->product->id}}" data-bs-toggle="modal">Delete</button>
+                                        <button class="btn btn-danger" data-bs-target="#delete{{ $cart->id }}"
+                                            data-bs-toggle="modal">Delete</button>
                                     </div>
 
                                 </div>
                             </div>
                         </div>
-
                     @endforeach
 
 

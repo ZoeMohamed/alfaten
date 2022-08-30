@@ -29,7 +29,9 @@ class CartsController extends Controller
 
 
         $carts = Transaction::where('user_id', Auth::user()->id)->where('status', 'unpaid')
-            ->with('product')->get();
+            ->with('product')->orderBy('product_id')->get();
+
+
 
         foreach ($carts as $cart) {
 
@@ -130,6 +132,10 @@ class CartsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $cart = Transaction::find($id);
+
+        $cart->delete();
+
+        return redirect()->back();
     }
 }

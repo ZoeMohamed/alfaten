@@ -110,7 +110,7 @@ class FirstSeeder extends Seeder
 
 
         Product::create([
-            "name" => "Indomie Goren",
+            "name" => "Indomie Goreng",
             "price" => 3500,
             "thumbnail" => "/assets/indomie.jpeg",
             "desc" => "Lejat bergiji",
