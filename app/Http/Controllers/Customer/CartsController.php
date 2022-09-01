@@ -9,6 +9,7 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class CartsController extends Controller
 {
@@ -87,11 +88,48 @@ class CartsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    public function generateInvoice()
+    {
+
+        $invoice_code = "INV_" . Auth::user()->id . Str::random(5);
+
+        $check = Transaction::where('invoice_code', $invoice_code)->get();
+
+        //Jikalau Invoice sudah dipakai
+        if (count($check) > 0) {
+            $invoice_code = "INV_" . Auth::user()->id . Str::random(5);
+            // $invoice_code
+        }
+
+        return $invoice_code;
+    }
+    public function checkout()
+    {
+        $invoice_code = $this->generateInvoice();
+        Transaction::where('user_id', Auth::user()->id)->where('status', 'unpaid')->update([
+            "invoice_code" => $invoice_code,
+            "status" => "waiting"
+        ]);
+
+        return redirect()->route('customer.invoice', $invoice_code);
+
+        // return redirect("/customer/carts/invoice/{$invoice_code}");
+    }
     public function show($id)
     {
         //
     }
+    public function invoice($invoice_code)
+    {
 
+        $carts = Transaction::where('user_id', Auth::user()->id)->where('status', 'unpaid')
+            ->with('product')->get();
+
+        $jumlah_cart = $carts->sum('quantity');
+        $transactions = Transaction::where('invoice_code', $invoice_code)->get();
+        return view('customer.invoice', compact('transactions', 'jumlah_cart'));
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -113,15 +151,12 @@ class CartsController extends Controller
     public function update(Request $request, $id)
     {
 
-        $check = Transaction::where('product_id', $request->product_id)
-            ->where('user_id', Auth::user()->id)
-            ->where('status', 'unpaid')
-            ->first();
+
         Transaction::find($id)->update([
             "quantity" => $request->qty
         ]);
         // dd($request->qty);
-        return redirect()->back();
+        return redirect()->back()->with('status', 'Berhasil Mengedit Jumlah Produk dari keranjang');
     }
 
     /**
@@ -136,6 +171,6 @@ class CartsController extends Controller
 
         $cart->delete();
 
-        return redirect()->back();
+        return redirect()->back()->with('status', 'Berhasil mengapus barang dari keranjang');
     }
 }

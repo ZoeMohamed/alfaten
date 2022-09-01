@@ -39,9 +39,7 @@
                                     {{ $product->new_price !== $product->price ? $product->new_price : '' }} --}}
                                     <p>Price After Discount : {{ $cart->product->new_price }}</p>
                                     <div class="d-flex gap-3">
-                                        @include('customer.modal_detail')
-                                        <button class="btn btn-success" data-bs-target="#detail{{ $cart->id }}"
-                                            data-bs-toggle="modal">Detail</button>
+
 
                                         @include('customer.modal_edit')
 
@@ -74,6 +72,10 @@
                     <div class="card-body">
                         <h4 class="mt-3"> Rp.{{ $total_harga }}
                         </h4>
+                        {{-- <form action="{{ route('customer.carts.checkout') }}" method="GET">
+                            <button class="btn btn-primary" type="submit"> Checkout</button>
+                        </form> --}}
+                        <a href="{{ route('customer.carts.checkout') }}" class="btn btn-primary mt-2">Checkout</a>
                     </div>
                 </div>
 

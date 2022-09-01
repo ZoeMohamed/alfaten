@@ -30,11 +30,13 @@ Route::controller(\App\Http\Controllers\Customer\HomeController::class)->prefix(
     Route::post('/addToCart', 'addToCart')->name('customer.addToCart');
 });
 
-Route::controller(\App\Http\Controllers\Customer\CartsController::class)->prefix('customer')->group(function () {
+Route::controller(App\Http\Controllers\Customer\CartsController::class)->prefix('customer')->group(function () {
     Route::get('/carts', 'index')->name('customer.carts');
-    Route::get('/carts/{id}', 'show')->name('customer.detailCart');
+    // Route::get('/carts/{id}', 'show')->name('customer.detailCart');
     Route::post('/carts/update/{id}', 'update')->name('customer.updateCart');
-    Route::post('/carts/delete/{id}', 'destroy')->name('customer.deleteCart');
+    Route::delete('/carts/delete/{id}', 'destroy')->name('customer.deleteCart');
+    Route::get('/carts/checkout', 'checkout')->name('customer.carts.checkout');
+    Route::get('/carts/invoice/{invoice_code}', 'invoice')->name('customer.invoice');
 });
 Route::get('cashier/home', function () {
 })->name('cashier.home');

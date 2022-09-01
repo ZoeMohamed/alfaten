@@ -55,7 +55,7 @@
                                                                 @csrf
                                                                 <div class="modal-body">
                                                                     <input type="hidden" value="{{ $product->id }}"
-                                                                        name="product_id">
+                                                                        name="product_id" min="1">
                                                                     Nama Produk : {{ $product->name }}<br>
                                                                     Harga : {{ $product->price }}<br>
                                                                     {{-- Harga : {{ $product->diskon }}<br> --}}

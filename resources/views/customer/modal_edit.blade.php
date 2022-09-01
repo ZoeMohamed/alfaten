@@ -5,18 +5,22 @@
                 <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <form action="{{ route('customer.updateCart', $cart->id) }}" method="POST">
+            <form action="{{ route('customer.updateCart', $cart->id) }}" method="POST">
+                <div class="modal-body">
+
                     @csrf
-                    <input type="number" name="qty">
+
+                    <p>Nama Produk : {{ $cart->product->name }}</p>
+                    <p>Harga Satuan : {{ $cart->product->price }}</p>
+                    <input type="number" name="qty" value="{{ $cart->quantity }}" min="1">
                     <input type="hidden" value="{{ $cart->id }}" name="product_id">
-                    <button type="submit">Edit</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Understood</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                </div>
+            </form>
+
         </div>
     </div>
 </div>
